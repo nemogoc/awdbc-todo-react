@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
 
-class TodoItem extends Component {
-  constructor(props){
-    super(props);
+const TodoItem = ({name, completed}) => (
+      <div>
+        {name}
+        {completed ? " - completed" : ""}
+      </div>
+    );
 
-    this.state = {completed: false}
-  }
-
-  render() {
-    return (
-      <div>{this.props.name}</div>
-    )
-  }
-}
 
 export default TodoItem;

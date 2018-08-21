@@ -38,7 +38,7 @@ class TodoList extends Component {
     let items = <div>Loading...</div>;
     if(todoItems && todoItems.length > 0){
       items = todoItems.map(item => (
-        <TodoItem key={item._id} name={item.name} />
+        <TodoItem key={item._id} {...item} />
       ));
     }
     return (
