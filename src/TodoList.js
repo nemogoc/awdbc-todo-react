@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import React, {Component} from 'react';
+import TodoItem from './TodoItem'
 
 const API_URL = "/api/todos";
 
@@ -33,8 +34,18 @@ class TodoList extends Component {
   }
 
   render(){
+    let {todoItems} = this.state;
+    let items = <div>Loading...</div>;
+    if(todoItems && todoItems.length > 0){
+      items = todoItems.map(item => (
+        <TodoItem key={item._id} name={item.name} />
+      ));
+    }
     return (
-      <div>TodoList</div>
+      <div>
+        <div>TodoList</div>
+        {items}
+      </div>
     )
   }
 }
