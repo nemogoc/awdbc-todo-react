@@ -1,12 +1,12 @@
 import React from 'react';
 
-const TodoItem = ({name, completed, deleteTodo}) => (
-      <div>
-        {name}
-        {completed ? " - completed" : ""}
-        <span onClick={deleteTodo}> - Delete</span>
-      </div>
-    );
+const TodoItem = ({name, completed, toggleTodo, deleteTodo}) => (
+  <div>
+    <span onClick={toggleTodo}> {name}</span>
+    {completed ? " - completed" : ""}
+    <span onClick={deleteTodo}> - Delete</span>
+  </div>
+);
 
 
 export default TodoItem;

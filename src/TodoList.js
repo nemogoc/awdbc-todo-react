@@ -11,7 +11,6 @@ class TodoList extends Component {
     this.state = {todoItems: []};
 
     this.addTodo = this.addTodo.bind(this);
-    this.deleteTodo = this.deleteTodo.bind(this);
   }
 
   componentDidMount(){
@@ -85,12 +84,45 @@ class TodoList extends Component {
       })
   }
 
+  toggleTodo(id, completed){
+    fetch(`${API_URL}/${id}`, {
+      method: 'PUT',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({completed: !completed})
+    })
+      .then(resp => {
+        if(!resp.ok){
+          if(resp.status >= 400 && resp.status < 500){
+            //with 4XX error, probably error message in resp, want to display that
+            return resp.json().then(data => {
+              throw {errorMessage: data.message};
+            });
+          }
+          else {
+            throw {errorMessage: "Server not responding, please try again later"};
+          }
+        }
+        return resp.json()
+      })
+      .then((updatedTodo) => {
+        const todos = this.state.todoItems.map(todo =>
+          (todo._id === updatedTodo._id) ? updatedTodo : todo);
+        this.setState({todoItems: todos})
+      })
+  }
+
   render(){
     let {todoItems} = this.state;
     let items = <div>Loading...</div>;
     if(todoItems && todoItems.length > 0){
-      items = todoItems.map(item => (
-        <TodoItem key={item._id} deleteTodo={this.deleteTodo.bind(this, item._id)} {...item} />
+      items = todoItems.map(item => (<TodoItem
+          key={item._id}
+          toggleTodo={this.toggleTodo.bind(this, item._id, item.completed)}
+          deleteTodo={this.deleteTodo.bind(this, item._id)}
+          {...item}
+        />
       ));
     }
     return (
